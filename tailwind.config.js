@@ -1,10 +1,7 @@
 module.exports = {
-  content: ['./index.html', './src/**/*.{svelte,js,ts}'],
+  content: ['./*.html', './src/**/*.{js,jsx,ts,tsx,vue}'],
   theme: {
     extend: {}
   },
-  plugins: [],
-  variants: {
-    extend: {}
-  }
+  plugins: []
 }
