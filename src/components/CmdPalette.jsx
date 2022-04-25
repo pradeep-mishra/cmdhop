@@ -1,53 +1,155 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Dialog, Combobox } from '@headlessui/react'
 import { SearchIcon } from '@heroicons/react/outline'
-export default function CmdPalette({ plugin }) {
+import CmdOption from './CmdOption'
+import hotkeys from 'hotkeys-js'
+
+function addRecentSeach(title) {
+  const recent =
+    JSON.parse(
+      localStorage.getItem('cmdhop_recent_search')
+    ) || []
+  const index = recent.findIndex((item) => item === title)
+  if (index !== -1) {
+    recent.splice(index, 1)
+  }
+  recent.unshift(title)
+  if (recent.length > 4) {
+    recent.pop()
+  }
+  localStorage.setItem(
+    'cmdhop_recent_search',
+    JSON.stringify(recent)
+  )
+}
+
+function getRecentSearch(service) {
+  const recent =
+    JSON.parse(
+      localStorage.getItem('cmdhop_recent_search')
+    ) || []
+  const searched = recent
+    .map((title) => {
+      return (
+        service.actions.find(
+          (action) => action.title === title
+        ) || false
+      )
+    })
+    .filter((item) => item)
+  console.log('serched is', searched)
+  return searched
+}
+
+export default function CmdPalette({
+  service,
+  handler,
+  overlay
+}) {
   const [isOpen, setIsOpen] = useState(true)
+  const [actions, setActions] = useState(service.actions)
+
+  useEffect(() => {
+    const allKeys =
+      'cmd+k,' +
+      actions.map((action) => action.hotkey).join(',')
+    hotkeys(allKeys, function (event, reciver) {
+      event.preventDefault()
+      const hotkey = reciver.key
+      const action = actions.find(
+        (action) => action.hotkey === hotkey
+      )
+      if (hotkey === 'cmd+k') {
+        setIsOpen(!isOpen)
+      } else if (action) {
+        console.log('short cut pressed for this', action)
+        if (action.clickat) {
+          const element = document.querySelector(
+            action.clickat
+          )
+          if (element) {
+            element.click()
+          }
+        } else if (
+          handler &&
+          typeof handler === 'function'
+        ) {
+          handler(action)
+        }
+      }
+    })
+
+    return () => {
+      hotkeys.unbind()
+      console.log('unregistering all hotkeys')
+    }
+  }, [isOpen])
+
   return (
     <Dialog
       open={isOpen}
       onClose={setIsOpen}
       className='fixed inset-0 p-4 pt-[25vh] overflow-y-auto'>
-      <Dialog.Overlay className='fixed inset-0 bg-gray-500/60' />
+      {overlay && (
+        <Dialog.Overlay className='fixed inset-0 bg-gray-500/60' />
+      )}
       <Combobox
-        onChange={(e) => console.log(e.target.value)}
+        onChange={(e) => {
+          console.log('click enter', e)
+          addRecentSeach(e.title)
+          setIsOpen(false)
+        }}
         as='div'
-        className='relative mx-auto max-w-xl rounded-xl bg-white shadow-2xl ring-1 ring-black/5 divide-y divide-gray-100 overflow-hidden'>
+        className={`relative mx-auto max-w-xl rounded-xl bg-white/70 shadow-2xl ring-1 ring-black/5 divide-y divide-gray-100 overflow-hidden ${
+          actions.length ? 'pb-2' : ''
+        }`}>
         <div className='flex items-center px-4'>
           <SearchIcon
             onChange={(e) => console.log(e.target.value)}
             className='text-gray-500 h-6 w-6'
           />
           <Combobox.Input
-            className='h-12 w-full bg-transparent text-sm border-0 focus:outline-none text-gray-800 placeholder-gray-400'
+            className='h-14 mx-2 w-full bg-transparent text-sm border-0 focus:outline-none text-gray-800 placeholder-gray-400'
             placeholder='Search...'
+            onChange={(e) => {
+              setActions(
+                service.actions.filter((item) =>
+                  item.title
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+                )
+              )
+            }}
           />
         </div>
-        <Combobox.Options
-          static
-          className='py-4 text-sm max-h-60 overflow-y-auto'>
-          {plugin.list.map((cmd) => (
-            <Combobox.Option key={cmd.name} value={cmd.name}>
-              {({ active }) => (
-                <div
-                  className={`px-4 py-2 space-x-1 ${
-                    active ? 'bg-indigo-600' : 'bg-white'
-                  }`}>
-                  <span
-                    className={`font-medium ${
-                      active ? 'text-white' : 'text-gray-900'
-                    }`}>
-                    {cmd.title}
-                  </span>
-                  <span
-                    className={active ? 'text-indigo-200' : 'text-gray-400'}>
-                    in {cmd.team}
-                  </span>
-                </div>
-              )}
-            </Combobox.Option>
-          ))}
-        </Combobox.Options>
+        {actions.length ? (
+          <Combobox.Options
+            static
+            className='cmdhop-box py-4 text-sm max-h-60 overflow-y-auto'>
+            <span className='px-4 my-4 text-xs font-semibold text-gray-700'>
+              Recent searches
+            </span>
+            {getRecentSearch(service).map((cmd) => (
+              <Combobox.Option key={cmd.name} value={cmd}>
+                {({ active }) => (
+                  <CmdOption cmd={cmd} active={active} />
+                )}
+              </Combobox.Option>
+            ))}
+            <hr className='my-2' />
+            {actions
+              .filter((cmd) => cmd.search !== false)
+              .map((cmd) => (
+                <Combobox.Option key={cmd.name} value={cmd}>
+                  {({ active }) => (
+                    <CmdOption cmd={cmd} active={active} />
+                  )}
+                </Combobox.Option>
+              ))}
+          </Combobox.Options>
+        ) : (
+          <></>
+        )}
       </Combobox>
     </Dialog>
   )
