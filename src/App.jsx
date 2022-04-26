@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import CmdPalette from './components/CmdPalette'
 import Button from './components/Button'
-import TestPlugin from './plugins/test'
+import TestPlugin from './plugins/gmail'
 
 function App() {
   return (

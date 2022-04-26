@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Dialog, Combobox } from '@headlessui/react'
 import { SearchIcon } from '@heroicons/react/outline'
 import CmdOption from './CmdOption'
@@ -48,6 +48,7 @@ export default function CmdPalette({
 }) {
   const [isOpen, setIsOpen] = useState(true)
   const [actions, setActions] = useState(service.actions)
+  const [showRecent, setShowRecent] = useState(true)
 
   useEffect(() => {
     const allKeys =
@@ -64,11 +65,34 @@ export default function CmdPalette({
       } else if (action) {
         console.log('short cut pressed for this', action)
         if (action.clickat) {
-          const element = document.querySelector(
-            action.clickat
-          )
-          if (element) {
-            element.click()
+          if (action.clickat.indexOf('|>') !== -1) {
+            const [selector, query] =
+              action.clickat.split('|>')
+            const elements =
+              document.querySelectorAll(selector)
+            const [prop, value] = query.split('=')
+            const element = Array.from(elements).find(
+              (elm) => {
+                switch (prop) {
+                  case 'text':
+                    return elm.textContent === value
+                  case 'html':
+                    return elm.innerHTML === value
+                  default:
+                    return false
+                }
+              }
+            )
+            if (element) {
+              element.click()
+            }
+          } else {
+            const element = document.querySelector(
+              action.clickat
+            )
+            if (element) {
+              element.click()
+            }
           }
         } else if (
           handler &&
@@ -95,7 +119,6 @@ export default function CmdPalette({
       )}
       <Combobox
         onChange={(e) => {
-          console.log('click enter', e)
           addRecentSeach(e.title)
           setIsOpen(false)
         }}
@@ -112,11 +135,17 @@ export default function CmdPalette({
             className='h-14 mx-2 w-full bg-transparent text-sm border-0 focus:outline-none text-gray-800 placeholder-gray-400'
             placeholder='Search...'
             onChange={(e) => {
+              const value = e.target.value
+              if (value) {
+                setShowRecent(false)
+              } else {
+                setShowRecent(true)
+              }
               setActions(
                 service.actions.filter((item) =>
                   item.title
                     .toLowerCase()
-                    .includes(e.target.value.toLowerCase())
+                    .includes(value.toLowerCase())
                 )
               )
             }}
@@ -126,17 +155,27 @@ export default function CmdPalette({
           <Combobox.Options
             static
             className='cmdhop-box py-4 text-sm max-h-60 overflow-y-auto'>
-            <span className='px-4 my-4 text-xs font-semibold text-gray-700'>
-              Recent searches
-            </span>
-            {getRecentSearch(service).map((cmd) => (
-              <Combobox.Option key={cmd.name} value={cmd}>
-                {({ active }) => (
-                  <CmdOption cmd={cmd} active={active} />
-                )}
-              </Combobox.Option>
-            ))}
-            <hr className='my-2' />
+            {showRecent && (
+              <>
+                <span className='px-4 my-4 text-xs font-semibold text-gray-700'>
+                  Recent searches
+                </span>
+                {getRecentSearch(service).map((cmd) => (
+                  <Combobox.Option
+                    key={cmd.name}
+                    value={cmd}>
+                    {({ active }) => (
+                      <CmdOption
+                        cmd={cmd}
+                        active={active}
+                      />
+                    )}
+                  </Combobox.Option>
+                ))}
+                <hr className='my-2' />
+              </>
+            )}
+
             {actions
               .filter((cmd) => cmd.search !== false)
               .map((cmd) => (
