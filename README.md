@@ -1,2 +1,3 @@
 # cmdhop
-hot key for all web applications
+
+command palette for all web applications
