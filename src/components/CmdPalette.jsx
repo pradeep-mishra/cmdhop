@@ -44,7 +44,6 @@ export default function CmdPalette({
           setIsOpen(false);
           setActions(service.actions);
           setShowRecent(true);
-          //console.log('triggering handler', e.hotkey);
           callAction(e, handler);
         }}
         as='div'

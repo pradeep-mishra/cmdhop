@@ -57,6 +57,7 @@ export const processHotkey = (
           }
         });
         if (element) {
+          element.focus();
           element.click();
         }
       } else {
@@ -64,6 +65,7 @@ export const processHotkey = (
           action.clickAt
         );
         if (element) {
+          element.focus();
           element.click();
         }
       }
@@ -93,6 +95,7 @@ export const callAction = (action, handler) => {
         }
       });
       if (element) {
+        element.focus();
         element.click();
       }
     } else {
@@ -100,6 +103,7 @@ export const callAction = (action, handler) => {
         action.clickAt
       );
       if (element) {
+        element.focus();
         element.click();
       }
     }

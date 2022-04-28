@@ -1,8 +1,18 @@
 import plugins from '../plugins';
+import { CONVERT_CTRL_TO_CMD_IN_MAC } from '../plugins';
+
+function isMac() {
+  const name = navigator.appVersion || navigator.userAgent;
+  return name.toLowerCase().indexOf('macintosh') >= 0;
+}
 
 function addIds(actions) {
+  const isThisMac = isMac();
   return actions.map((item, index) => {
     item.id = index + 1;
+    if (CONVERT_CTRL_TO_CMD_IN_MAC && isThisMac) {
+      item.hotkey = item.hotkey.replace('ctrl', 'cmd');
+    }
     return item;
   });
 }

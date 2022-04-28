@@ -15,11 +15,7 @@
       "css": ["index.css"]
     }
   ],
-  "permissions": [
-    "*://mail.google.com/*",
-    "tabs",
-    "storage"
-  ],
+  "permissions": ["*://mail.google.com/*", "storage"],
   "browser_specific_settings": {
     "gecko": {
       "strict_min_version": "58.0",

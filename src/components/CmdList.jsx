@@ -5,7 +5,7 @@ const CmdList = ({ actions }) => {
   return actions && actions.length ? (
     <>
       {actions
-        .filter((cmd) => cmd.search !== false)
+        .filter((cmd) => cmd.showInSearch !== false)
         .map((cmd) => (
           <CmdOption cmd={cmd} key={cmd.id} />
         ))}

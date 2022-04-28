@@ -3,40 +3,40 @@ export default [
     title: 'Copy',
     hotkey: 'ctrl+c',
     icon: 'copy',
-    search: false
+    showInSearch: false
   },
   {
     title: 'Paste',
     hotkey: 'ctrl+v',
     icon: 'paste',
-    search: false
+    showInSearch: false
   },
   {
-    title: 'Compose an Email',
+    title: 'Compose an email...',
     hotkey: 'cmd+e',
     icon: 'compose',
     clickAt: 'div|>html=Compose'
   },
   {
-    title: 'Refresh Page',
-    hotkey: 'ctrl+r',
+    title: 'Refresh',
+    hotkey: 'ctrl+n',
     icon: 'refresh',
     clickAt: 'div[data-tooltip=Refresh]'
   },
   {
-    title: 'Open Drafts',
+    title: 'Open drafts...',
     hotkey: 'cmd+d',
     icon: 'draft',
     clickAt: 'a|>html=Drafts'
   },
   {
-    title: 'Open Sent',
+    title: 'Open sent...',
     hotkey: 'ctrl+m',
     icon: 'sent',
     clickAt: 'a|>html=Sent'
   },
   {
-    title: 'Open Inbox',
+    title: 'Open inbox...',
     hotkey: 'ctrl+i',
     icon: 'inbox',
     clickAt: 'a|>html=Inbox'
