@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { Combobox } from '@headlessui/react';
+
 const keysMap = {
   cmd: '⌘',
   ctrl: '⌃',
@@ -8,34 +10,48 @@ const keysMap = {
   enter: '↵',
   option: '⌥',
   '+': ''
+};
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
 }
 
-const CmdOption = ({ cmd, active }) => {
+const CmdOption = ({ cmd }) => {
   return (
-    <div
-      className={`mx-2 px-4 py-2 space-x-1 rounded ${
-        active ? 'bg-gray-400/30' : 'bg-transparent'
-      }`}>
-      <span
-        className={`font-normal text-sm ${
-          active ? 'text-gray-900' : 'text-gray-700'
-        }`}>
-        {cmd.title}
-      </span>
-      <span
-        className={
-          (active ? 'text-gray-900' : 'text-gray-700') +
-          ' float-right text-xs'
-        }>
-        {cmd.hotkey
-          .replace(
-            /ctrl|cmd|\+/g,
-            (match) => keysMap[match]
-          )
-          .toUpperCase()}
-      </span>
-    </div>
-  )
-}
+    cmd && (
+      <Combobox.Option key={cmd.id} value={cmd}>
+        {({ active }) => (
+          <div
+            className={`mx-2 px-4 py-2 space-x-1 rounded ${
+              active ? 'bg-gray-400/20' : 'bg-transparent'
+            }`}>
+            <span
+              className={`font-normal text-base ${
+                active ? 'text-gray-900' : 'text-gray-700'
+              }`}>
+              {cmd.title}
+            </span>
+            <span
+              className={
+                (active
+                  ? 'text-gray-900'
+                  : 'text-gray-700') +
+                ' float-right text-sm'
+              }>
+              <kbd className='font-sans'>
+                {cmd.hotkey
+                  .replace(
+                    /ctrl|cmd|shift|alt|option|enter|\+/g,
+                    (match) => keysMap[match]
+                  )
+                  .toUpperCase()}
+              </kbd>
+            </span>
+          </div>
+        )}
+      </Combobox.Option>
+    )
+  );
+};
 
-export default CmdOption
+export default CmdOption;

@@ -3,5 +3,6 @@ module.exports = {
   theme: {
     extend: {}
   },
-  plugins: []
-}
+
+  important: '#headlessui-portal-root'
+};

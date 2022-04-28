@@ -1,0 +1,35 @@
+{
+  "description": "Hotkey solution for web applications",
+  "manifest_version": 2,
+  "name": "Command Hop",
+  "version": "0.1",
+  "homepage_url": "https://github.com/pradeep-mishra/cmdhop",
+  "author": "Pradeep Mishra",
+  "icons": {
+    "48": "icons/icon-32.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://mail.google.com/*"],
+      "js": ["index.js"],
+      "css": ["index.css"]
+    }
+  ],
+  "permissions": [
+    "*://mail.google.com/*",
+    "tabs",
+    "storage"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "58.0",
+      "id": "{477aa089-9abb-438b-ba8b-4a713827289c}"
+    }
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "Command Hop",
+    "default_popup": "popup.html"
+  },
+  "default_locale": "en"
+}

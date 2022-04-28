@@ -1,16 +1,10 @@
-import React from 'react'
-import './App.css'
-import CmdPalette from './components/CmdPalette'
-import Button from './components/Button'
-import TestPlugin from './plugins/gmail'
+import React from 'react';
+import CmdPalette from './components/CmdPalette';
+import loadPlugin from './lib/loadPlugin';
+const plugin = loadPlugin();
 
 function App() {
-  return (
-    <div className='bg-white w-screen h-screen'>
-      <Button />
-      <CmdPalette service={TestPlugin} />
-    </div>
-  )
+  return <CmdPalette service={plugin} overlay={true} />;
 }
 
-export default App
+export default App;
