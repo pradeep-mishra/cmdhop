@@ -3,8 +3,8 @@ import { Combobox } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
 
 const SearchInput = ({
-  service,
-  setShowRecent,
+  actions,
+  setRecent,
   setActions
 }) => {
   return (
@@ -16,12 +16,12 @@ const SearchInput = ({
         onChange={(e) => {
           const value = e.target.value;
           if (value) {
-            setShowRecent(false);
+            setRecent(false);
           } else {
-            setShowRecent(true);
+            setRecent(true);
           }
           setActions(
-            service.actions.filter((item) =>
+            actions.filter((item) =>
               item.title
                 .toLowerCase()
                 .includes(value.toLowerCase())

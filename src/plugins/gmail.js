@@ -1,17 +1,5 @@
 export default [
   {
-    title: 'Copy',
-    hotkey: 'ctrl+c',
-    icon: 'copy',
-    showInSearch: false
-  },
-  {
-    title: 'Paste',
-    hotkey: 'ctrl+v',
-    icon: 'paste',
-    showInSearch: false
-  },
-  {
     title: 'Compose an email...',
     hotkey: 'cmd+e',
     icon: 'compose',
@@ -25,25 +13,25 @@ export default [
   },
   {
     title: 'Open drafts...',
-    hotkey: 'cmd+d',
+    hotkey: 'option+d',
     icon: 'draft',
     clickAt: 'a|>html=Drafts'
   },
   {
     title: 'Open sent...',
-    hotkey: 'ctrl+m',
+    hotkey: 'option+s',
     icon: 'sent',
     clickAt: 'a|>html=Sent'
   },
   {
     title: 'Open inbox...',
-    hotkey: 'ctrl+i',
+    hotkey: 'option+i',
     icon: 'inbox',
     clickAt: 'a|>html=Inbox'
   },
   {
     title: 'Search for mails...',
-    hotkey: 'ctrl+f',
+    hotkey: 'option+f',
     icon: 'markread',
     clickAt: 'input[name=q]'
   }

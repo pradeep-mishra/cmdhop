@@ -3,30 +3,95 @@ import { Dialog, Combobox } from '@headlessui/react';
 import { addRecentSearch } from '../lib/storage';
 import {
   hotkeyRegister,
-  processHotkey,
-  callAction
+  callHotkey,
+  callAction,
+  windowURL,
+  filterActionForThisPage
 } from '../lib/hotkey';
 import RecentSearches from './RecentSearches';
 import SearchInput from './SearchInput';
 import CmdList from './CmdList';
 
-const registerHostkey = hotkeyRegister();
+let serviceActions = [];
+let hotkeyHandler = null;
+let setIsOpenRef = null;
+let lastRegisteredURL = windowURL();
+let registerHotkey = hotkeyRegister();
+
+/**************  Window URL/Location watcher **************************/
+
+window.addEventListener('hashchange', (e) => {
+  if (lastRegisteredURL !== windowURL()) {
+    lastRegisteredURL = windowURL();
+    console.log('re register all hot keys');
+    registerHotkey(
+      serviceActions,
+      (reciver, event) => {
+        callHotkey(
+          reciver,
+          serviceActions,
+          setIsOpenRef,
+          hotkeyHandler,
+          event
+        );
+      },
+      true
+    );
+  }
+});
+
+window.history.pushState = (function (pushstate) {
+  return function (state, title, url) {
+    pushstate.apply(window.history, arguments);
+    setTimeout(() => {
+      if (lastRegisteredURL !== windowURL()) {
+        lastRegisteredURL = windowURL();
+        console.log('re register all hot keys');
+        registerHotkey(
+          serviceActions,
+          (reciver, event) => {
+            callHotkey(
+              reciver,
+              serviceActions,
+              setIsOpenRef,
+              hotkeyHandler,
+              event
+            );
+          },
+          true
+        );
+      }
+    }, 0);
+  };
+})(window.history.pushState);
+
+/**********************************************************************/
 
 export default function CmdPalette({
   service,
-  handler,
-  overlay
+  handlerFunc,
+  showOverlay,
+  showRecent
 }) {
+  serviceActions = service.actions;
   const [isOpen, setIsOpen] = useState(false);
   const [actions, setActions] = useState(service.actions);
-  const [showRecent, setShowRecent] = useState(true);
+  const [recent, setRecent] = useState(showRecent || false);
+  let serviceActionArray =
+    filterActionForThisPage(serviceActions);
+
+  hotkeyHandler = handlerFunc;
+  setIsOpenRef = setIsOpen;
 
   useEffect(() => {
-    const allKeys =
-      'cmd+k,' +
-      actions.map((action) => action.hotkey).join(',');
-    registerHostkey(actions, (reciver, event) => {
-      processHotkey(reciver, actions, setIsOpen, handler);
+    registerHotkey(actions, (reciver, event) => {
+      callHotkey(
+        reciver,
+        actions,
+        setIsOpen,
+        handlerFunc,
+        event
+      );
     });
   }, [isOpen]);
 
@@ -35,7 +100,7 @@ export default function CmdPalette({
       open={isOpen}
       onClose={setIsOpen}
       className='fixed inset-0 z-10 overflow-y-auto p-4 sm:p-10 md:pt-[25vh]'>
-      {overlay && (
+      {showOverlay && (
         <Dialog.Overlay className='fixed inset-0 bg-gray-500 bg-opacity-80' />
       )}
       <Combobox
@@ -43,8 +108,8 @@ export default function CmdPalette({
           addRecentSearch(e);
           setIsOpen(false);
           setActions(service.actions);
-          setShowRecent(true);
-          callAction(e, handler);
+          setRecent(true);
+          callAction(e, handlerFunc);
         }}
         as='div'
         className='mx-auto max-w-2xl transform divide-y
@@ -53,16 +118,16 @@ export default function CmdPalette({
         ring-black ring-opacity-5 backdrop-blur
         backdrop-filter'>
         <SearchInput
-          service={service}
+          actions={serviceActionArray}
           setActions={setActions}
-          setShowRecent={setShowRecent}
+          setRecent={setRecent}
         />
         {actions.length ? (
           <Combobox.Options
             static
             className='cmdhop-box py-4 text-base max-h-64 overflow-y-auto'>
-            <RecentSearches showRecent={showRecent} />
-            <CmdList actions={actions} />
+            <RecentSearches recent={recent} />
+            <CmdList actions={serviceActionArray} />
           </Combobox.Options>
         ) : (
           <></>

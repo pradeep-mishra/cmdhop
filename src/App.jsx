@@ -4,7 +4,13 @@ import loadPlugin from './lib/loadPlugin';
 const plugin = loadPlugin();
 
 function App() {
-  return <CmdPalette service={plugin} overlay={true} />;
+  return (
+    <CmdPalette
+      service={plugin}
+      showOverlay={true}
+      showRecent={true}
+    />
+  );
 }
 
 export default App;

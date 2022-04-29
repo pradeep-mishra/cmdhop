@@ -1,5 +1,8 @@
-import plugins from '../plugins';
-import { CONVERT_CTRL_TO_CMD_IN_MAC } from '../plugins';
+import plugins from '../plugins/registry';
+import {
+  CONVERT_CMD_TO_CTRL_IN_NON_MAC,
+  CONVERT_OPTION_TO_ALT_IN_NON_MAC
+} from '../plugins/registry';
 
 function isMac() {
   const name = navigator.appVersion || navigator.userAgent;
@@ -10,8 +13,11 @@ function addIds(actions) {
   const isThisMac = isMac();
   return actions.map((item, index) => {
     item.id = index + 1;
-    if (CONVERT_CTRL_TO_CMD_IN_MAC && isThisMac) {
-      item.hotkey = item.hotkey.replace('ctrl', 'cmd');
+    if (CONVERT_CMD_TO_CTRL_IN_NON_MAC && !isThisMac) {
+      item.hotkey = item.hotkey.replace('cmd', 'ctrl');
+    }
+    if (CONVERT_OPTION_TO_ALT_IN_NON_MAC && !isThisMac) {
+      item.hotkey = item.hotkey.replace('option', 'alt');
     }
     return item;
   });
