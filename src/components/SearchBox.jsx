@@ -3,11 +3,6 @@ import { Combobox } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
 
 const SearchBox = ({ actions, setActions, setRecent, recent }) => {
-  useEffect(() => {
-    console.log('recent set to', recent);
-    setRecent(recent);
-  }, []);
-
   return (
     <div className='relative flex items-center px-4'>
       <SearchIcon className='pointer-events-none absolute top-4.5 left-4 h-5 w-5 text-gray-900 text-opacity-40' />

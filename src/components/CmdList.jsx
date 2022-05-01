@@ -67,6 +67,7 @@ const CmdList = ({ overlay, registerHotkeys, recent, handler }) => {
     return () => {
       //console.log('CmdList unmounted');
       setActions(filteredActions);
+      setShowRecentSearch(recent);
     };
   }, [show]);
 
