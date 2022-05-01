@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import AppCmd from './AppCmd';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppCmd />
   </React.StrictMode>,
   ensureRootElement()
 );

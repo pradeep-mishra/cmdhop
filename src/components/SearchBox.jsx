@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Combobox } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
 
-const SearchInput = ({
-  actions,
-  setRecent,
-  setActions
-}) => {
+const SearchBox = ({ actions, setActions, setRecent, recent }) => {
+  useEffect(() => {
+    console.log('recent set to', recent);
+    setRecent(recent);
+  }, []);
+
   return (
     <div className='relative flex items-center px-4'>
       <SearchIcon className='pointer-events-none absolute top-4.5 left-4 h-5 w-5 text-gray-900 text-opacity-40' />
@@ -18,13 +19,11 @@ const SearchInput = ({
           if (value) {
             setRecent(false);
           } else {
-            setRecent(true);
+            setRecent(recent);
           }
           setActions(
             actions.filter((item) =>
-              item.title
-                .toLowerCase()
-                .includes(value.toLowerCase())
+              item.title.toLowerCase().includes(value.toLowerCase())
             )
           );
         }}
@@ -33,4 +32,4 @@ const SearchInput = ({
   );
 };
 
-export default SearchInput;
+export default SearchBox;

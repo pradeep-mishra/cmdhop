@@ -1,8 +1,7 @@
-import plugins from '../plugins/registry';
-import {
+import services, {
   CONVERT_CMD_TO_CTRL_IN_NON_MAC,
   CONVERT_OPTION_TO_ALT_IN_NON_MAC
-} from '../plugins/registry';
+} from '../services/registry';
 
 function isMac() {
   const name = navigator.appVersion || navigator.userAgent;
@@ -22,22 +21,15 @@ function addIds(actions) {
     return item;
   });
 }
-export default function loadPlugin() {
-  console.log('checking plugins');
 
-  const plugin = plugins.find((plugin) => {
-    return document.URL.includes(plugin.url);
+export default function loadService() {
+  const service = services.find((service) => {
+    return document.URL.includes(service.url);
   });
-  if (!plugin) {
-    console.log(
-      'no plugin found. loading',
-      plugins[0].name
-    );
-    plugins[0].actions = addIds(plugins[0].actions);
-    return plugins[0];
-    //throw new Error(`Plugin ${this.name} not found`);
+  if (!service) {
+    throw new Error('service not found');
   }
-  console.log('plugin found', plugin.name);
-  plugin.actions = addIds(plugin.actions);
-  return plugin;
+  service.actions = addIds(service.actions);
+  console.log(`service ${service.name} loaded`);
+  return service;
 }

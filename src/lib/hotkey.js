@@ -1,50 +1,32 @@
 import hotkeys from 'hotkeys-js';
+import { getWindowURL, matchURL, getPressedCommand } from './helper';
 
-export const windowURL = () => {
-  return window.location.href.split('?')[0];
-};
-
-export const matchURL = (url, matchURL) => {
-  if (matchURL.includes('*')) {
-    return url.match(
-      new RegExp('^' + matchURL.replace(/\*+/g, '.*') + '$')
-    )
-      ? true
-      : false;
-  }
-  return url === matchURL;
-};
-
-export const filterActionForThisPage = (actions) => {
-  return actions.filter((action) => {
-    if (action.matchURL) {
-      return matchURL(windowURL(), action.matchURL);
-    }
-    return true;
-  });
-};
+const ENTER_KEY = '↵';
 
 export const hotkeyRegister = () => {
   let registered = false;
   let handler = () => {};
   return function (actions, callback, reset) {
+    //console.log('registring keys', actions);
     if (typeof callback === 'function') {
       handler = callback;
     }
+    //console.log('registered', registered, 'reset', reset);
     if (registered && !reset) {
       return;
     }
     registered = true;
     if (reset) {
+      //console.log('unbind old keys');
       hotkeys.unbind();
     }
-    const url = windowURL();
+    const url = getWindowURL();
     const allKeys =
       'cmd+k,' +
       actions
         .map((action) => {
           if (action.matchURL) {
-            return matchURL(url, action.matchURL)
+            return matchURL(url, action.matchURL, action.title)
               ? action.hotkey
               : '';
           }
@@ -52,86 +34,109 @@ export const hotkeyRegister = () => {
         })
         .filter((key) => key)
         .join(',');
-    console.log(
-      'registering hotkeys',
-      allKeys,
-      windowURL()
-    );
+    //console.log('hooking all keys', allKeys);
     hotkeys(allKeys, function (event, reciver) {
+      //console.log('shortcut called', reciver.key);
       handler(reciver, event);
     });
   };
 };
 
-export const callHotkey = (
-  reciver,
-  actions,
-  setIsOpen,
-  handler,
-  event
-) => {
-  event.preventDefault();
+export const onHotKeyPress = (reciver, actions, handler) => {
   const hotkey = reciver.key;
-  console.log('key pressed', hotkey);
-  if (hotkey === 'cmd+k') {
-    setIsOpen((open) => !open);
-    return;
-  }
-  const action = actions.find((action) => {
-    if (action.matchURL) {
-      return matchURL(windowURL(), action.matchURL)
-        ? action.hotkey === hotkey
-        : false;
-    }
-    return action.hotkey === hotkey;
-  });
+  const action = getPressedCommand(actions, hotkey);
   if (action) {
-    callAction(action, handler);
+    execAction(action, handler);
   }
 };
 
-export const callAction = (action, handler) => {
-  console.log('calling action', action.hotkey, action);
+export const execAction = (action, handler) => {
   if (action.clickAt) {
-    if (action.clickAt.indexOf('|>') !== -1) {
-      const [selector, query] = action.clickAt.split('|>');
-      const elements = document.querySelectorAll(selector);
-      const [prop, value] = query.split('=');
-      let element = Array.from(elements).find((elm) => {
-        switch (prop) {
-          case 'text':
-            return elm.textContent === value;
-          case 'html':
-            return elm.innerHTML === value;
-          case 'parent':
-            return true;
-          default:
-            return false;
-        }
-      });
-      if (prop) {
-        switch (prop) {
-          case 'parent':
-            element = element.parentElement;
-            break;
-        }
-      }
-      if (element) {
-        element.focus();
-        element.click();
-      }
-    } else {
-      const element = document.querySelector(
-        action.clickAt
-      );
-      if (element) {
-        element.focus();
-        element.click();
-      }
-    }
+    clickAt(action, handler);
   } else if (action.gotoURL) {
-    window.location = action.gotoURL;
+    gotoURL(action, handler);
+  } else if (action.groupBy) {
+    groupBy(action, handler);
+  } else if (action.alert) {
+    alertIt(action, handler);
   } else if (typeof handler === 'function') {
-    handler(action);
+    handleCallback(action, handler);
   }
 };
+
+export const onHelperItemClick = (selectedAction, handler) => {
+  if (selectedAction && selectedAction.element) {
+    selectedAction.element.focus();
+    selectedAction.element.click();
+  }
+  if (typeof handler === 'function') {
+    handler();
+  }
+};
+
+function clickAt(action, handler) {
+  if (action.clickAt.indexOf('|>') !== -1) {
+    const [selector, query] = action.clickAt.split('|>');
+    const elements = document.querySelectorAll(selector);
+    const [prop, value] = query.split('=');
+    let element = Array.from(elements).find((elm) => {
+      switch (prop) {
+        case 'text':
+          return elm.textContent === value;
+        case 'html':
+          return elm.innerHTML === value;
+        case 'parent':
+          return true;
+        default:
+          return false;
+      }
+    });
+    if (prop) {
+      switch (prop) {
+        case 'parent':
+          element = element.parentElement;
+          break;
+      }
+    }
+    if (element) {
+      element.focus();
+      element.click();
+    }
+  } else {
+    const element = document.querySelector(action.clickAt);
+    if (element) {
+      element.focus();
+      element.click();
+    }
+  }
+}
+
+function gotoURL(action, handler) {
+  window.location = action.gotoURL;
+}
+
+function groupBy(action, handler) {
+  const elements = document.querySelectorAll(action.groupBy);
+  const helperList = Array.from(elements).map((elm, index) => {
+    const listItem =
+      action.list && action.list.title
+        ? elm.querySelector(action.list.title)
+        : elm;
+    return {
+      id: index + 1,
+      header: (action.list && action.list.header) || 'Choose an option',
+      title: listItem ? listItem.textContent : 'Title not found',
+      element: elm,
+      dudkey: ENTER_KEY
+    };
+  });
+  handler(action, helperList, 'groupby');
+}
+
+function alertIt(action, handler) {
+  console.log(action.alert);
+}
+
+function handleCallback(action, handler) {
+  handler(action, [], 'callback');
+}
