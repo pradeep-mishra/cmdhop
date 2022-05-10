@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import { Dialog, Combobox } from '@headlessui/react';
 import { useCmdListStore, useHelperListStore } from '../store';
 import { onHelperItemClick } from '../lib/hotkey';
@@ -40,6 +40,7 @@ const HelperList = ({ overlay, handler }) => {
             <span className='px-4 my-4 text-xs font-semibold text-gray-700 border-t-0'>
               Choose an option
             </span>
+            <Combobox.Option value='' />
             <List actions={actions} />
           </Combobox.Options>
         ) : (

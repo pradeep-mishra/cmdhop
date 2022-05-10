@@ -1,14 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+//import React from 'react';
+//import ReactDOM from 'react-dom';
+import { render } from 'preact';
 import './index.css';
 import AppCmd from './AppCmd';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <AppCmd />
-  </React.StrictMode>,
-  ensureRootElement()
-);
+//ReactDOM.render(
+
+render(<AppCmd />, ensureRootElement());
 
 function ensureRootElement() {
   let root = document.getElementById('cmdhop_root');

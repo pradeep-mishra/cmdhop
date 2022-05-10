@@ -1,4 +1,5 @@
-import React from 'react';
+//import React from 'react';
+
 import { useCmdListStore } from './store';
 import { filterActionForThisPage, getWindowURL } from './lib/helper';
 import { hotkeyRegister } from './lib/hotkey';

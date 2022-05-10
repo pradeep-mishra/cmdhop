@@ -1,5 +1,6 @@
 export default [
   {
+    matchURL: '*://app.contentstack.com/#!/stacks',
     title: 'Show stacks...',
     hotkey: 'shift+h',
     clickAt: 'svg[name=Logo]|>parent'

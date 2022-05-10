@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+//import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'preact/hooks';
+
 import { Dialog, Combobox } from '@headlessui/react';
 import { onHotKeyPress, execAction } from '../lib/hotkey';
 import { filterActionForThisPage, getWindowURL } from '../lib/helper';
@@ -101,6 +103,7 @@ const CmdList = ({ overlay, registerHotkeys, recent, handler }) => {
           <Combobox.Options
             static
             className='cmdhop-box py-4 text-base max-h-64 overflow-y-auto'>
+            <Combobox.Option value='' />
             <RecentSearch showRecent={showRecentSearch} />
             <List actions={actions} />
           </Combobox.Options>
