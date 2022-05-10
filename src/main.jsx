@@ -2,11 +2,11 @@
 //import ReactDOM from 'react-dom';
 import { render } from 'preact';
 import './index.css';
-import AppCmd from './AppCmd';
+import App from './components/App';
 
 //ReactDOM.render(
 
-render(<AppCmd />, ensureRootElement());
+render(<App />, ensureRootElement());
 
 function ensureRootElement() {
   let root = document.getElementById('cmdhop_root');

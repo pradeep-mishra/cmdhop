@@ -1,7 +1,7 @@
 import services, {
   CONVERT_CMD_TO_CTRL_IN_NON_MAC,
   CONVERT_OPTION_TO_ALT_IN_NON_MAC
-} from '../services/registry';
+} from '../registry';
 
 function isMac() {
   const name = navigator.appVersion || navigator.userAgent;
