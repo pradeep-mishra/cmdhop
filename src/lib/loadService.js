@@ -1,7 +1,7 @@
 import services, {
   CONVERT_CMD_TO_CTRL_IN_NON_MAC,
   CONVERT_OPTION_TO_ALT_IN_NON_MAC
-} from '../registry';
+} from '../services/registry';
 
 function isMac() {
   const name = navigator.appVersion || navigator.userAgent;
@@ -11,7 +11,7 @@ function isMac() {
 function addIds(actions) {
   const isThisMac = isMac();
   return actions.map((item, index) => {
-    item.id = index + 1;
+    item.id = item.id || index + 1;
     if (CONVERT_CMD_TO_CTRL_IN_NON_MAC && !isThisMac) {
       item.hotkey = item.hotkey.replace('cmd', 'ctrl');
     }
