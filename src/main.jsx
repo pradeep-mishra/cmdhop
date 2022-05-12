@@ -1,10 +1,6 @@
-//import React from 'react';
-//import ReactDOM from 'react-dom';
 import { render } from 'preact';
 import './index.css';
 import App from './components/App';
-
-//ReactDOM.render(
 
 render(<App />, ensureRootElement());
 

@@ -1,4 +1,3 @@
-//import React from 'react';
 import ListOption from './ListOption';
 
 const List = ({ actions }) => {

@@ -1,4 +1,3 @@
-//import React from 'react';
 import { Dialog, Combobox } from '@headlessui/react';
 import { useCmdListStore, useHelperListStore } from '../store';
 import { onHelperItemClick } from '../lib/hotkey';

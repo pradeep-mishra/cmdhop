@@ -1,4 +1,3 @@
-//import React, { useEffect, useState } from 'react';
 import { useEffect, useState } from 'preact/hooks';
 
 import { Dialog, Combobox } from '@headlessui/react';
