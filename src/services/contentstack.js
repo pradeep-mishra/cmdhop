@@ -33,30 +33,35 @@ export default [
   },
   {
     matchURL: '*://app.contentstack.com/#!/stack/*',
+    excludeURL: '*://app.contentstack.com/#!/stack/*/entries',
     title: 'Show entries...',
     hotkey: 'shift+e',
     clickAt: 'svg.Entries__icon[name=Entries]|>parent'
   },
   {
     matchURL: '*://app.contentstack.com/#!/stack/*',
+    excludeURL: '*://app.contentstack.com/#!/stack/*/assets',
     title: 'Show assets...',
     hotkey: 'shift+a',
     clickAt: 'svg.Asset__icon[name=Assets]|>parent'
   },
   {
     matchURL: '*://app.contentstack.com/#!/stack/*',
+    excludeURL: '*://app.contentstack.com/#!/stack/*/content-types',
     title: 'Show content models...',
     hotkey: 'shift+c',
     clickAt: 'svg.ConModel__icon[name=ContentModels]|>parent'
   },
   {
     matchURL: '*://app.contentstack.com/#!/stack/*',
+    excludeURL: '*://app.contentstack.com/#!/stack/*/publish-queue',
     title: 'Show publish queue...',
     hotkey: 'shift+q',
     clickAt: 'svg.PublishQueue__icon[name=PublishQueue]|>parent'
   },
   {
     matchURL: '*://app.contentstack.com/#!/stack/*',
+    excludeURL: '*://app.contentstack.com/#!/stack/*/settings/*',
     title: 'Show settings...',
     hotkey: 'shift+s',
     clickAt: 'svg.Settings__icon[name=Setting]|>parent'

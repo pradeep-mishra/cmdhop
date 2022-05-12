@@ -1,5 +1,5 @@
 import hotkeys from 'hotkeys-js';
-import { getWindowURL, matchURL, getPressedCommand } from './helper';
+import { getWindowURL, matchAllURL, getPressedCommand } from './helper';
 
 const ENTER_KEY = '↵';
 
@@ -26,7 +26,9 @@ export const hotkeyRegister = () => {
       actions
         .map((action) => {
           if (action.matchURL) {
-            return matchURL(url, action.matchURL, action) ? action.hotkey : '';
+            return matchAllURL(url, action.matchURL, action)
+              ? action.hotkey
+              : '';
           }
           return action.hotkey;
         })

@@ -1,4 +1,4 @@
-import { matchURL, getWindowURL } from './helper';
+import { matchAllURL, getWindowURL } from './helper';
 
 export const addToRecentSearch = (cmd) => {
   let recent = JSON.parse(localStorage.getItem('cmdhop_recent_search')) || [];
@@ -29,7 +29,7 @@ export const getRecentSearch = (byURL) => {
       if (!entry.matchURL) {
         return true;
       }
-      return matchURL(getWindowURL(), entry.matchURL, entry) ? true : false;
+      return matchAllURL(getWindowURL(), entry.matchURL, entry) ? true : false;
     });
   }
   return recent;
