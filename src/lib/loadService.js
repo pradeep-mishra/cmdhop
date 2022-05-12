@@ -1,7 +1,7 @@
 import services, {
   CONVERT_CMD_TO_CTRL_IN_NON_MAC,
   CONVERT_OPTION_TO_ALT_IN_NON_MAC
-} from '../services/registry';
+} from '../registry';
 
 function isMac() {
   const name = navigator.appVersion || navigator.userAgent;
@@ -13,10 +13,10 @@ function addIds(actions) {
   return actions.map((item, index) => {
     item.id = item.id || index + 1;
     if (CONVERT_CMD_TO_CTRL_IN_NON_MAC && !isThisMac) {
-      item.hotkey = item.hotkey.replace('cmd', 'ctrl');
+      item.hotkey = item.hotkey.replace(/cmd|command/gi, 'ctrl');
     }
     if (CONVERT_OPTION_TO_ALT_IN_NON_MAC && !isThisMac) {
-      item.hotkey = item.hotkey.replace('option', 'alt');
+      item.hotkey = item.hotkey.replace(/option|opt/gi, 'alt');
     }
     return item;
   });

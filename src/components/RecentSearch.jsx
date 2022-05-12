@@ -6,7 +6,7 @@ import { getRecentSearch } from '../lib/recentSearch';
 import { filterActionForThisPage } from '../lib/helper';
 
 const RecentSearch = ({ showRecent }) => {
-  let recentSearch = filterActionForThisPage(getRecentSearch());
+  let recentSearch = filterActionForThisPage(getRecentSearch(true));
   return showRecent && recentSearch.length ? (
     <>
       <span className='px-4 my-4 text-xs font-semibold text-gray-700'>

@@ -26,9 +26,7 @@ export const hotkeyRegister = () => {
       actions
         .map((action) => {
           if (action.matchURL) {
-            return matchURL(url, action.matchURL, action.title)
-              ? action.hotkey
-              : '';
+            return matchURL(url, action.matchURL, action) ? action.hotkey : '';
           }
           return action.hotkey;
         })
