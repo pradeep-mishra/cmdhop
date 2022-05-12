@@ -1,7 +1,7 @@
 //import React from 'react';
 
 import { useCmdListStore } from '../store';
-import { filterActionForThisPage, getWindowURL } from '../lib/helper';
+import { filterActionForThisPage } from '../lib/helper';
 import { hotkeyRegister } from '../lib/hotkey';
 import loadService from '../lib/loadService';
 import CmdList from './CmdList';

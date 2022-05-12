@@ -9,16 +9,16 @@ export default [
   {
     name: 'test',
     url: 'http://localhost:3000',
-    actions: test
+    service: test
   },
   {
     name: 'gmail',
     url: 'https://mail.google.com',
-    actions: gmail
+    service: gmail
   },
   {
     name: 'contentstack',
     url: 'https://app.contentstack.com',
-    actions: contentstack
+    service: contentstack
   }
 ];

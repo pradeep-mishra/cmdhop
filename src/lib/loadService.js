@@ -23,13 +23,13 @@ function addIds(actions) {
 }
 
 export default function loadService() {
-  const service = services.find((service) => {
+  let service = services.find((service) => {
     return document.URL.includes(service.url);
   });
   if (!service) {
     throw new Error('service not found');
   }
-  service.actions = addIds(service.actions);
+  service.actions = addIds(service.service.actions);
   console.log(`service ${service.name} loaded`);
   return service;
 }
