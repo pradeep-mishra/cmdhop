@@ -57,8 +57,8 @@ export const execAction = (action, handler) => {
     gotoURL(action, handler);
   } else if (action.groupBy) {
     groupBy(action, handler);
-  } else if (action.alert) {
-    alertIt(action, handler);
+  } else if (action.log) {
+    logIt(action, handler);
   } else if (typeof handler === 'function') {
     handleCallback(action, handler);
   }
@@ -133,8 +133,8 @@ function groupBy(action, handler) {
   handler(action, helperList, 'groupby');
 }
 
-function alertIt(action, handler) {
-  console.log(action.alert);
+function logIt(action, handler) {
+  console.log(action.log);
 }
 
 function handleCallback(action, handler) {

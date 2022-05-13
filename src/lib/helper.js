@@ -14,6 +14,9 @@ export const matchAllURL = (url, matchUrl, action) => {
 };
 
 export const matchURL = (url, matchUrl, action) => {
+  if (!matchUrl) {
+    return true;
+  }
   if (action.exactMatch !== false) {
     if (matchUrl.includes('*')) {
       return url.match(new RegExp('^' + matchUrl.replace(/\*+/g, '.*') + '$'))

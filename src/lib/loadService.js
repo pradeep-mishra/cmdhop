@@ -11,7 +11,7 @@ function isMac() {
 function addIds(actions) {
   const isThisMac = isMac();
   return actions.map((item, index) => {
-    item.id = item.id || index + 1;
+    item.id = item.id || 'i' + (index + 1);
     if (CONVERT_CMD_TO_CTRL_IN_NON_MAC && !isThisMac) {
       item.hotkey = item.hotkey.replace(/cmd|command/gi, 'ctrl');
     }
