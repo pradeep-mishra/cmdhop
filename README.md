@@ -52,8 +52,14 @@ export default {
 - showInSearch : true|false to list item in command palatte (if you want to list any action as hotkey only then this option can be used)
 - matchURL : to set the url for an action (if this option is provided then action will load when the url of site match with the matchURL)
 - excludeURL : to exclude and specific route for this action
+- exactMatch : true|false to exact macth the url (default: false)
 - groupBy : specify the css query to collect all elements to show as an sub list
 - list : object to set the properties of sub list (should be used with groupBy option)
+
+###### list options
+
+- title : can be either static string or css select for element (for static string use : as a prefix e.g :Item)
+- header : static string for header of sublist
 
 #### Example of groupBy and list option to create sub pallate
 
@@ -65,7 +71,7 @@ export default {
   "hotkey": "shift+o",
   "groupBy": "div.Table__body__row[role=row]",
   "list": {
-    "title": "div.curr-entry-title",
+    "title": "div.curr-entry-title" | ":Item",
     "header": "Choose Organisation"
   }
 }

@@ -1,8 +1,8 @@
-import { Dialog, Combobox } from '@headlessui/react';
-import { useCmdListStore, useHelperListStore } from '../store';
+import { Combobox, Dialog } from '@headlessui/react';
 import { onHelperItemClick } from '../lib/hotkey';
-import SearchBox from './SearchBox';
+import { useHelperListStore } from '../store';
 import List from './List';
+import SearchBox from './SearchBox';
 
 const HelperList = ({ overlay, handler }) => {
   const show = useHelperListStore((state) => state.show);
@@ -37,7 +37,7 @@ const HelperList = ({ overlay, handler }) => {
             static
             className='cmdhop-box py-4 text-base max-h-64 overflow-y-auto'>
             <span className='px-4 my-4 text-xs font-semibold text-gray-700 border-t-0'>
-              Choose an option
+              {actions?.[0]?.header}
             </span>
             <Combobox.Option value='' />
             <List actions={actions} />

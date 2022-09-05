@@ -24,6 +24,11 @@ function addIds(actions) {
 
 export default function loadService() {
   let service = services.find((service) => {
+    if (Array.isArray(service.url)) {
+      return service.url.find((url) => {
+        return document.URL.includes(url);
+      });
+    }
     return document.URL.includes(service.url);
   });
   if (!service) {

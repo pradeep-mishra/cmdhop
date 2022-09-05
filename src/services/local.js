@@ -24,7 +24,7 @@ export default {
       groupBy: 'div',
       list: {
         header: 'Choose Item',
-        title: 'div',
+        title: ':Item',
         log: 'item clicked from option 1'
       }
     },

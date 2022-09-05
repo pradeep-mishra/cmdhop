@@ -7,12 +7,7 @@ export const CONVERT_OPTION_TO_ALT_IN_NON_MAC = true;
 export default [
   {
     name: 'local',
-    url: 'http://localhost',
-    service: local
-  },
-  {
-    name: 'demo',
-    url: 'https://cmdhop.netlify.app',
+    url: ['http://localhost', 'https://cmdhop.netlify.app'],
     service: local
   },
   {

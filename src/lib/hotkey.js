@@ -1,5 +1,5 @@
 import hotkeys from 'hotkeys-js';
-import { getWindowURL, matchAllURL, getPressedCommand } from './helper';
+import { getPressedCommand, getWindowURL, matchAllURL } from './helper';
 
 const ENTER_KEY = '↵';
 
@@ -118,19 +118,33 @@ function gotoURL(action, handler) {
 function groupBy(action, handler) {
   const elements = document.querySelectorAll(action.groupBy);
   const helperList = Array.from(elements).map((elm, index) => {
-    const listItem =
-      action.list && action.list.title
-        ? elm.querySelector(action.list.title)
-        : elm;
     return {
       id: index + 1,
-      header: (action.list && action.list.header) || 'Choose an option',
-      title: listItem ? listItem.textContent : 'Title not found',
+      header: getHeader(action?.list?.header),
+      title: getTitle(action, elm),
       element: elm,
       dudkey: ENTER_KEY
     };
   });
+  //console.log('helperList', helperList);
   handler(action, helperList, 'groupby');
+}
+
+function getTitle(action, elm) {
+  if (!action?.list?.title) {
+    return 'No Title';
+  }
+  if (action?.list?.title && action.list.title.charAt(0) === ':') {
+    return action.list.title.replace(':', '');
+  }
+  const listItem = action?.list?.title
+    ? elm.querySelector(action.list.title)
+    : elm;
+  return listItem ? listItem.textContent : 'No Title';
+}
+
+function getHeader(header) {
+  return header ?? 'Choose an option';
 }
 
 function logIt(action, handler) {
