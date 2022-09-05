@@ -2,6 +2,12 @@
 
 command palette for all web applications
 
+#### Demo site
+
+[https://cmdhop.netlify.app](https://cmdhop.netlify.app)
+
+#### Screenshot
+
 ![CommandHop, shortcut utility for your website/webapp](/public/ss.png)
 
 #### Example service configuration file

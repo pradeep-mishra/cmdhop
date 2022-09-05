@@ -169,3 +169,20 @@
 #headlessui-portal-root select {
   text-transform: none;
 }
+
+.footer-left {
+  color: rgb(61, 61, 61);
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  text-align: right;
+}
+
+.footer-left .creator {
+  bottom: 7px;
+  position: relative;
+}
+
+.footer-left a {
+  text-decoration: none;
+}
