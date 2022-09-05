@@ -31,7 +31,7 @@ export default {
     {
       title: 'Select Option 3',
       hotkey: 'option+3',
-      log: 'Option 3 caled'
+      log: 'Option 3 called'
     },
     {
       title: 'Select Option 4',
