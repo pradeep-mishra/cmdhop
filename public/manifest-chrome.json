@@ -1,6 +1,6 @@
 {
-  "description": "Command pallate for web applications",
-  "manifest_version": 2,
+  "description": "command pallate for web applications",
+  "manifest_version": 3,
   "name": "Command Hop",
   "version": "0.1",
   "homepage_url": "https://github.com/pradeep-mishra/cmdhop",
@@ -16,14 +16,7 @@
     }
   ],
   "permissions": ["tabs", "storage"],
-  "browser_specific_settings": {
-    "gecko": {
-      "strict_min_version": "58.0",
-      "id": "{477aa089-9abb-438b-ba8b-4a713827289c}"
-    }
-  },
-  "browser_action": {
-    "browser_style": true,
+  "action": {
     "default_title": "Command Hop",
     "default_popup": "popup.html"
   }
