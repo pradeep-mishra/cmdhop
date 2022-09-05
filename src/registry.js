@@ -11,6 +11,11 @@ export default [
     service: local
   },
   {
+    name: 'demo',
+    url: 'https://cmdhop.netlify.app',
+    service: local
+  },
+  {
     name: 'gmail',
     url: 'https://mail.google.com',
     service: gmail
