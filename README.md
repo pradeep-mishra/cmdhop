@@ -4,9 +4,8 @@ command palette for all web applications
 
 ![CommandHop, shortcut utility for your website/webapp](/public/ss.png)
 
-````js
+#### Example service configuration file
 
-Example service configuration file
 ```js
 export default {
   actions: [
@@ -42,7 +41,7 @@ export default {
     }
   ]
 };
-````
+```
 
 #### Properties in service config json
 
