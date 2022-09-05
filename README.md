@@ -4,78 +4,70 @@ command palette for all web applications
 
 ![CommandHop, shortcut utility for your website/webapp](/public/ss.png)
 
-```js
+````js
 
 Example service configuration file
+```js
+export default {
+  actions: [
+    {
+      title: 'Compose an email...', // title for command pallate item
+      hotkey: 'cmd+e', // shortcut key to call item
+      clickAt: 'div|>html=Compose' // css query selector with some custom functionality to select and click element when item is slected
+    },
+    {
+      title: 'Refresh',
+      hotkey: 'ctrl+n',
+      clickAt: 'div[data-tooltip=Refresh]'
+    },
+    {
+      title: 'Open drafts...',
+      hotkey: 'option+d',
+      clickAt: 'a|>html=Drafts'
+    },
+    {
+      title: 'Open sent...',
+      hotkey: 'option+s',
+      clickAt: 'a|>html=Sent'
+    },
+    {
+      title: 'Open inbox...',
+      hotkey: 'option+i',
+      clickAt: 'a|>html=Inbox'
+    },
+    {
+      title: 'Search for mails...',
+      hotkey: 'option+f',
+      clickAt: 'input[name=q]'
+    }
+  ]
+};
+````
 
-export default [
-  {
-    title: 'Show collections...', // title for command pallete item
-    hotkey: 'shift+h', // shortcut key
-    clickAt: 'svg[name=Logo]|>parent' // css query selector for element to click when item/command is clicked
-  },
-  {
-    matchURL: '*://www.somesite.com/collections', // optional matchURL to enable this command for this specific url only
-    title: 'Open collection[n]...',
-    hotkey: 'shift+o',
-    groupBy: 'div.CollectionCard', // to enable sublist on click/select of a command. sublist items will be based on css query selector
-    list: { // formating sublist
-      header: 'Choose collection', // title for sublist
-      title: '.CollectionCard__title span' // css query selector to pick title for each item/command in sublist
-    }
-  },
-  {
-    matchURL: '*://www.somesite.com/collections/*/entries',
-    title: 'Open entry[n]...',
-    hotkey: 'shift+o',
-    groupBy: 'div.Table__body__row[role=row]',
-    list: {
-      title: 'div.curr-entry-title',
-      header: 'Choose entry'
-    }
-  },
-  {
-    matchURL: '*://app.contentstack.com/collections',
-    title: 'New collection...',
-    hotkey: 'cmd+shift+n',
-    clickAt: 'button|>text=New Collection' // |> is pipe operator to add extra match criteria to pick element (html for innerHTML, text for innerText)
-  },
-  {
-    matchURL: '*://www.somesite.com/collection/*',
-    title: 'Show entries...',
-    hotkey: 'shift+e',
-    clickAt: 'svg.Entries__icon[name=Entries]|>parent' // s pipe operator to add extra match criteria to pick element (parent to pick parent of selected element)
-  },
-  {
-    matchURL: '*://www.somesite.com/collection/*',
-    title: 'Show assets...',
-    hotkey: 'shift+a',
-    clickAt: 'svg.Asset__icon[name=Assets]|>parent'
-  },
-  {
-    matchURL: '*://www.somesite.com/collection/*',
-    title: 'Show content models...',
-    hotkey: 'shift+c',
-    clickAt: 'svg.ConModel__icon[name=ContentModels]|>parent'
-  },
-  {
-    matchURL: '*://www.somesite.com/collection/*',
-    title: 'Show publish items...',
-    hotkey: 'shift+q',
-    clickAt: 'svg.PublishItems__icon[name=PublishQueue]|>parent'
-  },
-  {
-    matchURL: '*://www.somesite.com/collection/*',
-    title: 'Show settings...',
-    hotkey: 'shift+s',
-    clickAt: 'svg.Settings__icon[name=Setting]|>parent'
-  },
-  {
-    matchURL: '*://www.somesite.com/collection/*/entries',
-    title: 'New entry...',
-    hotkey: 'cmd+shift+n',
-    clickAt: 'button|>text=New Entry'
+#### Properties in service config json
+
+- title : to declatre the title of an item
+- hotkey : to set hotkey for an item
+- clickAt : to select a DOM element to click when i tem is selected
+- log : to console a string when item is selected (can be used as an alternative of clickAt)
+- showInSearch : true|false to list item in command palatte (if you want to list any action as hotkey only then this option can be used)
+- matchURL : to set the url for an action (if this option is provided then action will load when the url of site match with the matchURL)
+- excludeURL : to exclude and specific route for this action
+- groupBy : specify the css query to collect all elements to show as an sub list
+- list : object to set the properties of sub list (should be used with groupBy option)
+
+#### Example of groupBy and list option to create sub pallate
+
+```json
+{
+  "matchURL": "*://app.somesite.com/orgs/*",
+  "excludeURL": "*://app.somesite.com/orgs/*/users",
+  "title": "Open orgs[n]...",
+  "hotkey": "shift+o",
+  "groupBy": "div.Table__body__row[role=row]",
+  "list": {
+    "title": "div.curr-entry-title",
+    "header": "Choose Organisation"
   }
-]
-
+}
 ```
